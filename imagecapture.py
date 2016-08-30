@@ -1,21 +1,19 @@
 # Capturing images with Picamera and dislaying them with opencv
-
-from picamera.array import PiRGBArray
-from picamera import PiCamera
-import time
 import cv2
+import picamera
+import picamera.array
+import time
 
-# initialize the camera and grab a reference to the raw camera capture
-camera = PiCamera()
-rawCapture = PiRGBArray(camera)
-
-# allow the camera to warmup
-time.sleep(0.1)
-
-# grab an image from the camera
-camera.capture(rawCapture, format="bgr")
-image = rawCapture.array
-
-# display the image on screen and wait for a keypress
-cv2.imshow("Image", image)
-cv2.waitKey(0)
+with picamera.PiCamera() as camera:
+    with picamera.array.PiRGBArray(camera) as stream:
+        while True:
+            camera.capture(stream, format='bgr')
+            image = stream.array
+            gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+            cv2.imshow('frame', gray)
+            if cv2.waitKey(1) & 0xFF == ord('q'):
+                break
+            # reset the stream before the next capture
+            stream.seek(0)
+            stream.truncate()
+        cv2.destroyAllWindows()
