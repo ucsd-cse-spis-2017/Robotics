@@ -1,21 +1,35 @@
-# Capturing images with Picamera and dislaying them with opencv
-
-from picamera.array import PiRGBArray
-from picamera import PiCamera
-import time
+# Capturing images with Picamera, trasnforming images to HSV color space
+# and dislaying them with opencv
 import cv2
+import picamera
+import picamera.array
+import time
 
-# initialize the camera and grab a reference to the raw camera capture
-camera = PiCamera()
-rawCapture = PiRGBArray(camera)
+myfile = open('my_image.jpg','wb')
 
-# allow the camera to warmup
-time.sleep(0.1)
+with picamera.PiCamera() as camera:
+    camera.resolution=(640,480)
+    camera.framerate = 32
+    #camera.start_preview()
+    time.sleep(2)
+    #capture to file with resizing
+    camera.capture(myfile, resize= (320,240))
+    myfile.close()
+    #camera.stop_preview()
 
-# grab an image from the camera
-camera.capture(rawCapture, format="bgr")
-image = rawCapture.array
+    with picamera.array.PiRGBArray(camera, size=(640,480)) as stream:
+        
+        #capture to stream for use with opencv
+        camera.capture(stream, format='bgr')
+        image = stream.array
+        hsv = cv2.cvtColor(image, cv2.COLOR_BGR2HSV)
+        print "display hsv image"
+        #display the image on screen and wait for a key press
+        cv2.imshow('Image', hsv)
+        # save the transformed image to file
+        cv2.imwrite('hsvimage.jpg', hsv)
+        cv2.waitKey(0)
 
-# display the image on screen and wait for a keypress
-cv2.imshow("Image", image)
-cv2.waitKey(0)
+    
+
+   
