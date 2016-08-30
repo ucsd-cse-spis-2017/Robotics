@@ -1,9 +1,14 @@
+<<<<<<< HEAD
 # Capturing images with Picamera, trasnforming images to HSV color space
 # and dislaying them with opencv
+=======
+# Capturing images with Picamera and dislaying them with opencv
+>>>>>>> 9a30c61099447548eacb8741b33638d71159cf01
 import cv2
 import picamera
 import picamera.array
 import time
+<<<<<<< HEAD
 
 myfile = open('my_image.jpg','wb')
 
@@ -33,3 +38,19 @@ with picamera.PiCamera() as camera:
     
 
    
+=======
+
+with picamera.PiCamera() as camera:
+    with picamera.array.PiRGBArray(camera) as stream:
+        while True:
+            camera.capture(stream, format='bgr')
+            image = stream.array
+            gray = cv2.cvtColor(image, cv2.COLOR_BGR2GRAY)
+            cv2.imshow('frame', gray)
+            if cv2.waitKey(1) & 0xFF == ord('q'):
+                break
+            # reset the stream before the next capture
+            stream.seek(0)
+            stream.truncate()
+        cv2.destroyAllWindows()
+>>>>>>> 9a30c61099447548eacb8741b33638d71159cf01
