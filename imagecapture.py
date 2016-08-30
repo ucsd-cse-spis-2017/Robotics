@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 # Capturing images with Picamera, trasnforming images to HSV color space
 # and dislaying them with opencv
 import cv2
