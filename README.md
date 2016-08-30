@@ -21,3 +21,6 @@ Step 5: install opencv for python (this will help with doing any image processin
 $ sudo apt-get install libopencv-dev python-opencv
 
 
+Resources:
+
+http://picamera.readthedocs.io/en/release-1.10/recipes1.html
