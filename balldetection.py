@@ -44,7 +44,7 @@ for frame in camera.capture_continuous(rawCapture, format="bgr", use_video_port=
     img_low[:] = [h,s,v]
     # define the range of the blue color in hsv
     lower_green = np.array([h,s,v])
-    upper_green = np.array([h+20, 255, 255])
+    upper_green = np.array([255, 255, 255])
 
     # Threshold the hsv image to get only blue colors
     mask = cv2.inRange(hsv, lower_green, upper_green)
